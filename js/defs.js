@@ -76,6 +76,14 @@ var CastleKeys = new Array(16);
 var Sq120ToSq64 = new Array(BRD_SQ_NUM);
 var Sq64ToSq120 = new Array(64);
 
+
+//    JAVASCRIPT BITWISE OPERATORS
+//    |: OR      &: AND      ~: NOT     ^: EXCLUSIVE OR
+//    <<: LEFT SHIFT         >>:  RIGHT SHIFT
+
+
+
+// technically RAND_31; is a function that generates a random number with good coverage of all the bits ?? what does this mean ??
 function RAND_32() {
 
 	return (Math.floor((Math.random()*255)+1) << 23) | (Math.floor((Math.random()*255)+1) << 16)
