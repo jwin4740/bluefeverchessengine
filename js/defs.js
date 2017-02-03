@@ -73,8 +73,8 @@ var PieceKeys = new Array(14 * 120);
 var SideKey;
 var CastleKeys = new Array(16);
 
-var Sq120ToSq64 = new Array(BRD_SQ_NUM);
-var Sq64ToSq120 = new Array(64);
+var Sq120ToSq64 = new Array(BRD_SQ_NUM); // these two functions show where a certain square is on
+var Sq64ToSq120 = new Array(64);         // both a 64 number array and a 120 board array
 
 
 //    JAVASCRIPT BITWISE OPERATORS
@@ -102,11 +102,11 @@ var Mirror64 = [
 0	,	1	,	2	,	3	,	4	,	5	,	6	,	7
 ];
 
-function SQ64(sq120) { 
-	return Sq120ToSq64[(sq120)];
+function SQ64(sq120) {           // function that returns a 64 based number when given a 120 based number
+	return Sq120ToSq64[(sq120)];   
 }
 
-function SQ120(sq64) {
+function SQ120(sq64) {             // function that returns a 120 based number when given a 64 based number
 	return Sq64ToSq120[(sq64)];
 }
 

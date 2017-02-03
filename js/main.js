@@ -99,6 +99,10 @@ function InitHashKeys() {
     }
 }
 
+
+// sets the Sq120ToSq64 internal array to the same values as Sq64ToSq120, and uses 65 as placeholders
+// when the smaller array gets out of bounds
+
 function InitSq120To64() {
 
     var index = 0;
@@ -108,11 +112,11 @@ function InitSq120To64() {
     var sq64 = 0;
 
     for (index = 0; index < BRD_SQ_NUM; ++index) {
-        Sq120ToSq64[index] = 65;
+        Sq120ToSq64[index] = 65;       // fills the empty array of 120 with all 65s
     }
 
     for (index = 0; index < 64; ++index) {
-        Sq64ToSq120[index] = 120;
+        Sq64ToSq120[index] = 120;      // fills the empty array of 64 with all 120s
     }
 
     for (rank = RANKS.RANK_1; rank <= RANKS.RANK_8; ++rank) {
