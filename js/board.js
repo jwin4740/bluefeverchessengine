@@ -1,3 +1,9 @@
+// FEN notation for the starting positon
+
+
+// ranks      8   /  7    /6/5/4/3/    2   /    1      turn   castling  enpassant   50 move count    fullmoves
+//       rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR     w     KQkq         -        0                   1
+
 
 function PCEINDEX(pce, pceNum) {
 	return (pce * 10 + pceNum);

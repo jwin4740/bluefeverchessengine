@@ -21,8 +21,8 @@ var SQUARES = {
 
 var BOOL = { FALSE:0, TRUE:1 };
 
-var MAXGAMEMOVES = 2048;
-var MAXPOSITIONMOVES = 256;
+var MAXGAMEMOVES = 2048;  // safe number because most moves ever recorded in a game is like 500
+var MAXPOSITIONMOVES = 256;  // well beyond the number of posible move from a given position
 var MAXDEPTH = 64;
 var INFINITE = 30000;
 var MATE = 29000;
