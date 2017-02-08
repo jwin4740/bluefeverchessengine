@@ -137,30 +137,71 @@ var CastlePerm = [
     15, 15, 15, 15, 15, 15, 15, 15, 15, 15
 ];
 
-/*	
-0000 0000 0000 0000 0000 0111 1111 -> From 0x7F
-0000 0000 0000 0011 1111 1000 0000 -> To >> 7, 0x7F
-0000 0000 0011 1100 0000 0000 0000 -> Captured >> 14, 0xF
-0000 0000 0100 0000 0000 0000 0000 -> EP 0x40000
-0000 0000 1000 0000 0000 0000 0000 -> Pawn Start 0x80000
-0000 1111 0000 0000 0000 0000 0000 -> Promoted Piece >> 20, 0xF
-0001 0000 0000 0000 0000 0000 0000 -> Castle 0x1000000
+
+/* MOVE GENERATION EXPANATION
+
+from square
+to square
+
+enpassant capture
+captured piece
+promoted piece
+pawn starting move
+castling
+
+instead of making a move move object i.e. 
+
+var move = {
+  from :  sq,
+  to: sq,
+  castle : ....
+};
+
+we are going to set it up with just one integer and align each bit of information
+accordingly since we have 31 bits available
+
+hex:      F    C    7
+binary:  1111 1100 0111
+
+squares available 21 -> 98
+
+thus we can cover all of our moves within 7 bits -> 000 0000
+
+example: if the move is stored in 28 bits, the first seven bits are for from square
+
+0000 0000 0000 0000 0000 0111 1111 -> From 0x7f
+
+sample move:
+0010 1100 0000 1111 0000 0111 1111 -> var d 
+fromSq = d & 0x7f       (& is bitwise AND operator)
+
+So for our different move possibilities
+0000 0000 0000 0000 0000 0111 1111 -> From & 0x7f
+0000 0000 0000 0011 1111 1000 0000 -> To >> 7, & 0x7f
+0000 0000 0011 1100 0000 0000 0000 -> Captured >> 14, 0xf
+0000 0000 0100 0000 0000 0000 0000 -> en passant & 0x40000 
+0000 0000 1000 0000 0000 0000 0000 -> pawn start & 0x80000
+0000 1111 0000 0000 0000 0000 0000 -> promoted piece >> 20, & 0xf
+0001 0000 0000 0000 0000 0000 0000 -> castling & 0x100000
 */
 
+// function MOVE(from, to, captured, promoted, flag){ 
+//   return (from | (to << 7) | (captured << 14) | (promoted << 20) | flag);
+// }
 
-function FROMSQ(m) { return (m & 0x7F); }
-function TOSQ(m) { return ( (m >> 7) & 0x7F); }
-function CAPTURED(m) { return ( (m >> 14) & 0xF); }
-function PROMOTED(m) { return ( (m >> 20) & 0xF); }
+function FROMSQ(m) { return (m & 0x7F); }  // move From square
+function TOSQ(m) { return ( (m >> 7) & 0x7F); } // move To square
+function CAPTURED(m) { return ( (m >> 14) & 0xF); } // move capture
+function PROMOTED(m) { return ( (m >> 20) & 0xF); } // move promotion
 
-var MFLAGEP = 0x40000;
-var MFLAGPS = 0x80000;
-var MFLAGCA = 0x1000000;
+var MFLAGEP = 0x40000; // move flag en passant
+var MFLAGPS = 0x80000; // move flag pawn start
+var MFLAGCA = 0x1000000; // move flag castling
 
-var MFLAGCAP = 0x7C000;
-var MFLAGPROM = 0xF00000;
+var MFLAGCAP = 0x7C000;  // move flag "is the move a capture move"
+var MFLAGPROM = 0xF00000; // move flag a promotion
 
-var NOMOVE = 0;
+var NOMOVE = 0; 
 
 function SQOFFBOARD(sq) {
 	if(FilesBrd[sq]==SQUARES.OFFBOARD) return BOOL.TRUE;
@@ -183,8 +224,6 @@ GameController.GameOver = BOOL.FALSE;
 var UserMove = {};
 UserMove.from = SQUARES.NO_SQ;
 UserMove.to = SQUARES.NO_SQ;
-
-
 
 
 
