@@ -1,3 +1,6 @@
+
+
+// returns algebraic coordinate example: a3
 function PrSq(sq) {
 	return (FileChar[FilesBrd[sq]] + RankChar[RanksBrd[sq]]);
 }

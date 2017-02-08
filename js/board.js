@@ -20,7 +20,7 @@ GameBoard.ply = 0;
 GameBoard.enPas = 0; // en passant square is set if there is a possibility for an en passant
 GameBoard.castlePerm = 0;
 GameBoard.material = new Array(2); // WHITE,BLACK material of pieces
-GameBoard.pceNum = new Array(13); // indexed by Pce
+GameBoard.pceNum = new Array(13); // indexed by Pce // an array for the each piece number ex: wP is 1   wN is 2
 GameBoard.pList = new Array(14 * 10);
 GameBoard.posKey = 0;
 GameBoard.moveList = new Array(MAXDEPTH * MAXPOSITIONMOVES);
@@ -30,6 +30,18 @@ GameBoard.PvTable = [];
 GameBoard.PvArray = new Array(MAXDEPTH);
 GameBoard.searchHistory = new Array( 14 * BRD_SQ_NUM);
 GameBoard.searchKillers = new Array(3 * MAXDEPTH);
+
+/*
+pce * 10 + pceNum
+
+pceNum[bP] = 4;
+
+for(num = 0 to 3) {
+	bP * 10 + num;   70,71,72,73
+	sq = pList[70]....
+}
+
+*/
 
 // loop through the pieces and if the piece on a certain square and if it is your turn to move 
 // then generate legal moves
@@ -174,7 +186,7 @@ function GeneratePosKey() {
 function PrintPieceLists() {
 
 	var piece, pceNum;
-	
+	// first for loop starts at the whitepawn (1) and ends at black king (12)
 	for(piece = PIECES.wP; piece <= PIECES.bK; ++piece) {
 		for(pceNum = 0; pceNum < GameBoard.pceNum[piece]; ++pceNum) {
 			console.log('Piece ' + PceChar[piece] + ' on ' + PrSq( GameBoard.pList[PCEINDEX(piece,pceNum)] ));
@@ -203,6 +215,7 @@ function UpdateListsMaterial() {
 		sq = SQ120(index);
 		piece = GameBoard.pieces[sq];
 		if(piece != PIECES.EMPTY) {
+			console.warn("piece " + piece + " on " + sq);
 			
 			colour = PieceCol[piece];		
 			
@@ -236,6 +249,17 @@ function ResetBoard() {
 	GameBoard.posKey = 0;
 	GameBoard.moveListStart[GameBoard.ply] = 0;
 	
+	/* HOW THE PIECE LIST WORKS
+pce * 10 + pceNum
+
+pceNum[bP] = 4;
+
+for(num = 0 to 3) {
+	bP * 10 + num;   70,71,72,73
+	sq = pList[70]....
+}
+
+*/
 }
 
 //rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1
@@ -282,9 +306,9 @@ function ParseFen(fen) {
             
             case '/':
             case ' ':
-                rank--;
-                file = FILES.FILE_A;
-                fenCnt++;
+                rank--; // rank starts at 8 then decrements
+                file = FILES.FILE_A;  // moves from file A to H so, it resets it to A
+                fenCnt++;  // index of fen
                 continue;  
             default:
                 console.log("FEN error");
@@ -307,7 +331,9 @@ function ParseFen(fen) {
 	for (i = 0; i < 4; i++) {
         if (fen[fenCnt] == ' ') {
             break;
-        }		
+        }	
+
+        // castling permissions check	
 		switch(fen[fenCnt]) {
 			case 'K': GameBoard.castlePerm |= CASTLEBIT.WKCA; break;
 			case 'Q': GameBoard.castlePerm |= CASTLEBIT.WQCA; break;
@@ -325,9 +351,10 @@ function ParseFen(fen) {
 		console.log("fen[fenCnt]:" + fen[fenCnt] + " File:" + file + " Rank:" + rank);	
 		GameBoard.enPas = FR2SQ(file,rank);		
     }
-	
+	console.log(fen);
 	GameBoard.posKey = GeneratePosKey();	
 	UpdateListsMaterial();
+	PrintSqAttacked();
 }
 
 function PrintSqAttacked() {
@@ -356,23 +383,30 @@ function SqAttacked(sq, side) {
 	var t_sq;
 	var index;
 	
-	if(side == COLOURS.WHITE) {
+	// for pawn attacks
+	if(side == COLOURS.WHITE) { // tells if a square occupied by a black piece is being attacked by a white pawn from the array[120] grid
 		if(GameBoard.pieces[sq - 11] == PIECES.wP || GameBoard.pieces[sq - 9] == PIECES.wP) {
 			return BOOL.TRUE;
 		}
-	} else {
+	} else { // tells if a square occupied by a black piece is being attacked by a white pawn from the array[120] grid
 		if(GameBoard.pieces[sq + 11] == PIECES.bP || GameBoard.pieces[sq + 9] == PIECES.bP) {
 			return BOOL.TRUE;
 		}	
 	}
 	
+
+	// this is for the knight; 8 is the number of possible moves a knight can make if in the center of the board
+	// KnDir[index] goes through the integers in the KnDir array sequentially; 
+	// if the square is attacked it will return true
 	for(index = 0; index < 8; index++) {
 		pce = GameBoard.pieces[sq + KnDir[index]];
 		if(pce != SQUARES.OFFBOARD && PieceCol[pce] == side && PieceKnight[pce] == BOOL.TRUE) {
 			return BOOL.TRUE;
 		}
 	}
-	
+
+
+	// check if attacked square is in the path of queen or rook
 	for(index = 0; index < 4; ++index) {		
 		dir = RkDir[index];
 		t_sq = sq + dir;
@@ -389,6 +423,7 @@ function SqAttacked(sq, side) {
 		}
 	}
 	
+	// check if attacked square is in the (diagonal) path of queen or bishop
 	for(index = 0; index < 4; ++index) {		
 		dir = BiDir[index];
 		t_sq = sq + dir;
@@ -405,6 +440,8 @@ function SqAttacked(sq, side) {
 		}
 	}
 	
+
+	// check if king is attacking square
 	for(index = 0; index < 8; index++) {
 		pce = GameBoard.pieces[sq + KiDir[index]];
 		if(pce != SQUARES.OFFBOARD && PieceCol[pce] == side && PieceKing[pce] == BOOL.TRUE) {
@@ -413,6 +450,5 @@ function SqAttacked(sq, side) {
 	}
 	
 	return BOOL.FALSE;
-	
 
 }
