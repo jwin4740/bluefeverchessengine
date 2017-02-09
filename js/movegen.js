@@ -196,6 +196,7 @@ if (GameBoard.side == COLOURS.WHITE) {
 
     }
 
+// whitecastle permission kingside
     if (GameBoard.castlePerm & CASTLEBIT.WKCA) {
         if (GameBoard.pieces[SQUARES.F1] == PIECES.EMPTY && GameBoard.pieces[SQUARES.G1] == PIECES.EMPTY) {
             if (SqAttacked(SQUARES.F1, COLOURS.BLACK) == BOOL.FALSE && SqAttacked(SQUARES.E1, COLOURS.BLACK) == BOOL.FALSE) {
@@ -203,7 +204,7 @@ if (GameBoard.side == COLOURS.WHITE) {
             }
         }
     }
-
+// whitecastle permission queenside
     if (GameBoard.castlePerm & CASTLEBIT.WQCA) {
         if (GameBoard.pieces[SQUARES.D1] == PIECES.EMPTY && GameBoard.pieces[SQUARES.C1] == PIECES.EMPTY && GameBoard.pieces[SQUARES.B1] == PIECES.EMPTY) {
             if (SqAttacked(SQUARES.D1, COLOURS.BLACK) == BOOL.FALSE && SqAttacked(SQUARES.E1, COLOURS.BLACK) == BOOL.FALSE) {
@@ -258,7 +259,7 @@ if (GameBoard.side == COLOURS.WHITE) {
         }
     }
 }
-
+ // nonsliding pieces are independent of color
 pceIndex = LoopNonSlideIndex[GameBoard.side];
 pce = LoopNonSlidePce[pceIndex++];
 

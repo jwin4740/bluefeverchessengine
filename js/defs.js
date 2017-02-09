@@ -65,10 +65,32 @@ var RkDir = [ -1, -10,	1, 10 ];
 var BiDir = [ -9, -11, 11, 9 ];
 var KiDir = [ -1, -10,	1, 10, -9, -11, 11, 9 ];
 
+// direction numbers indexed by our piece type
+// first two zeros are for pawns
+
+
 var DirNum = [ 0, 0, 8, 4, 4, 8, 8, 0, 8, 4, 4, 8, 8 ];
 var PceDir = [ 0, 0, KnDir, BiDir, RkDir, KiDir, KiDir, 0, KnDir, BiDir, RkDir, KiDir, KiDir ];
+
+
 var LoopNonSlidePce = [ PIECES.wN, PIECES.wK, 0, PIECES.bN, PIECES.bK, 0 ];
+
+// indexed by side: white starts at index 0; black at index 3
 var LoopNonSlideIndex = [ 0, 3 ];
+
+/* EXAMPLE for nonsliding pieces
+
+while (pce != 0)
+{
+pceIndex = LoopNonSlideIndex[WHITE]  //which is 0
+pce = LoopNonSlidePiece[pceIndex]    // pce gets 0 which is wN
+pceIndex++;
+loop pceDir [wN][0 - 8]
+}
+
+
+*/ 
+
 var LoopSlidePce = [ PIECES.wB, PIECES.wR, PIECES.wQ, 0, PIECES.bB, PIECES.bR, PIECES.bQ, 0 ];
 var LoopSlideIndex = [ 0, 4];
 
