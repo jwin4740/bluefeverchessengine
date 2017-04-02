@@ -191,6 +191,10 @@ thus we can cover all of our moves within 7 bits -> 000 0000
 
 example: if the move is stored in 28 bits, the first seven bits are for from square
 
+*** bitwise AND(&) returns 1 if both bits are 1
+*** bitwise OR(|) return 1 if either bit is 1
+*** bitwise XOR(^) returns 1 if the bits are different
+
 0000 0000 0000 0000 0000 0111 1111 -> From 0x7f
 
 sample move:
