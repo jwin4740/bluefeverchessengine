@@ -1,0 +1,4 @@
+CHESS and/or COMPUTER SCIENCE NEW TERMINOLOGY
+---------------------------------------------
+
+ply - a half move in chess

@@ -156,6 +156,7 @@ function PrintBoard() {
 	console.log("key:" + GameBoard.posKey.toString(16));
 }
 
+// generates unique position key every time there is a move
 function GeneratePosKey() {
 
 	var sq = 0;
@@ -165,7 +166,7 @@ function GeneratePosKey() {
 	for(sq = 0; sq < BRD_SQ_NUM; ++sq) {
 		piece = GameBoard.pieces[sq];
 		if(piece != PIECES.EMPTY && piece != SQUARES.OFFBOARD) {			
-			finalKey ^= PieceKeys[(piece * 120) + sq];
+			finalKey ^= PieceKeys[(piece * 120) + sq];  // exclusive or
 		}		
 	}
 
@@ -189,7 +190,7 @@ function PrintPieceLists() {
 	// first for loop starts at the whitepawn (1) and ends at black king (12)
 	for(piece = PIECES.wP; piece <= PIECES.bK; ++piece) {
 		for(pceNum = 0; pceNum < GameBoard.pceNum[piece]; ++pceNum) {
-			console.log('Piece ' + PceChar[piece] + ' on ' + PrSq( GameBoard.pList[PCEINDEX(piece,pceNum)] ));
+			console.log('Piece ' + PceChar[piece] + ' on ' + PrSq( GameBoard.pList[PCEINDEX(piece, pceNum)] ));
 		}
 	}
 

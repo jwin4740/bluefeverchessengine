@@ -1,15 +1,44 @@
+// removes piece from board
+
 function ClearPiece(sq) {
 
-	var pce = GameBoard.pieces[sq];
+	var pce = GameBoard.pieces[sq]; // find which piece we are clearing      
 	var col = PieceCol[pce];
 	var index;
-	var t_pceNum = -1;
+	var t_pceNum = -1;   // represents temporary pceNum
 	
-	HASH_PCE(pce, sq);
+	HASH_PCE(pce, sq);  // removes our piece from the position key
 	
-	GameBoard.pieces[sq] = PIECES.EMPTY;
-	GameBoard.material[col] -= PieceVal[pce];
-	
+	GameBoard.pieces[sq] = PIECES.EMPTY; // sets the square in question to empty
+	GameBoard.material[col] -= PieceVal[pce]; 
+
+// removes our piece from the piece list
+
+/*
+sq = square3
+
+pList[wP 0] =square1
+pList[wP 1] =square2
+pList[wP 2] =square3   // if we are clearing the white pawn on square3, we set the t_pceNum
+pList[wP 3] =square4
+pList[wP 4] =square5
+
+t_pceNum = 2;
+swap value at 4 and 2;
+
+pList[wP 0] =square1
+pList[wP 1] =square2
+pList[wP 2] =square5   
+pList[wP 3] =square4
+pList[wP 4] =square3
+
+reduce pceNum for wP by 1 (so new list looks like: )
+pList[wP 0] =square1
+pList[wP 1] =square2
+pList[wP 2] =square5   
+pList[wP 3] =square4
+
+*/
 	for(index = 0; index < GameBoard.pceNum[pce]; ++index) {
 		if(GameBoard.pList[PCEINDEX(pce,index)] == sq) {
 			t_pceNum = index;
