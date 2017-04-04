@@ -74,12 +74,15 @@ sq4 = PlistArray[wP * 10 + 3]
 wP 10 -> 19
 */
 
+// checks if the pieces exist in the GameBoard.pieces array where the piecelist says it does
+// that the material is ok and that the position key is okay and the side is ok
 function CheckBoard() {   
  
-	var t_pceNum = [ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
-	var t_material = [ 0, 0];
+	var t_pceNum = [ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]; // mirror the pceNum array
+	var t_material = [ 0, 0];   // mirror the material array
 	var sq64, t_piece, t_pce_num, sq120, colour, pcount;
-	
+
+// loops through the piecelist	
 	for(t_piece = PIECES.wP; t_piece <= PIECES.bK; ++t_piece) {
 		for(t_pce_num = 0; t_pce_num < GameBoard.pceNum[t_piece]; ++t_pce_num) {
 			sq120 = GameBoard.pList[PCEINDEX(t_piece,t_pce_num)];

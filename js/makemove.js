@@ -53,28 +53,32 @@ pList[wP 3] =square4
 
 function AddPiece(sq, pce) {
 
-	var col = PieceCol[pce];
+	var col = PieceCol[pce];  // get piece color
 	
-	HASH_PCE(pce, sq);
+	HASH_PCE(pce, sq);  // hash piece in and update position key
 	
 	GameBoard.pieces[sq] = pce;
 	GameBoard.material[col] += PieceVal[pce];
-	GameBoard.pList[PCEINDEX(pce, GameBoard.pceNum[pce])] = sq;
+	GameBoard.pList[PCEINDEX(pce, GameBoard.pceNum[pce])] = sq; // insert into piece list
 	GameBoard.pceNum[pce]++;
 
 }
 
+
+// move piece from square to square
 function MovePiece(from, to) {
 	
 	var index = 0;
-	var pce = GameBoard.pieces[from];
+	var pce = GameBoard.pieces[from];  // get piece we are moving
 	
-	HASH_PCE(pce, from);
+	HASH_PCE(pce, from);  // hash piece out from the 'from square'
 	GameBoard.pieces[from] = PIECES.EMPTY;
 	
-	HASH_PCE(pce,to);
+	HASH_PCE(pce,to); // hash piece back in to the 'to' square
 	GameBoard.pieces[to] = pce;
 	
+    // loops through all of the pieces we have on the board
+    // and finds where the 'from' is and sets it to 'to'
 	for(index = 0; index < GameBoard.pceNum[pce]; ++index) {
 		if(GameBoard.pList[PCEINDEX(pce,index)] == from) {
 			GameBoard.pList[PCEINDEX(pce,index)] = to;
@@ -170,6 +174,7 @@ function MakeMove(move) {
     }
     
     return BOOL.TRUE;
+
 }
 
 function TakeMove() {

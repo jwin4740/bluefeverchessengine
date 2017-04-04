@@ -209,4 +209,6 @@ function init() {
     InitBoardVars();
     InitMvvLva();
     InitBoardSquares();
+    CheckBoard();
+
 }
