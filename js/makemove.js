@@ -89,6 +89,12 @@ function MovePiece(from, to) {
 }
 
 function MakeMove(move) {
+
+    /* first need to account for taking back a move or undoing a move
+
+
+
+    */
 	
 	var from = FROMSQ(move);
     var to = TOSQ(move);

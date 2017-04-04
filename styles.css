@@ -64,6 +64,44 @@
 	position: absolute;
 }
 
+#boardAndLabelsContainer {
+    float: left;
+}
+
+#rankLabelsContainer {
+	position: relative;
+	top: 40px;
+    float: left;
+    width: 60px;
+    height: 483px;
+    margin-left: 0px;
+    font-weight: 700;
+    font-size: 23px;
+}
+
+.labels {
+    clear: both;
+    padding: 0px 0px 0px 25px;
+    width: 60px;
+    height: 60px;
+}
+
+
+#fileLabelsContainer {
+    clear: both;
+    width: 484px;
+    height: 60px;
+    margin-left: 80px;
+    font-weight: 700;
+    font-size: 23px;
+}
+
+.labelsRow {
+    float: left;
+    width: 60px;
+    height: 60px;
+    padding: 15px 0px 0px 0px;
+}
 
 
 

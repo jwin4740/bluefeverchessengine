@@ -6,9 +6,9 @@
     <title>JSChess</title>
     <link href="styles.css" rel="stylesheet" type="text/css">
     <script type="text/javascript">
-    if (!window.console) console = {
-        log: function() {}
-    };
+        if (!window.console) console = {
+            log: function () {}
+        };
     </script>
 </head>
 
@@ -22,7 +22,14 @@
         <input type="text" id="fenIn">
         <button type="button" id="SetFen">Set Position</button>
     </div>
-    <div id="Board">
+    <div id="boardAndLabelsContainer">
+        <div id="rankLabelsContainer">
+        </div>
+        <div id="Board">
+        </div>
+        <br>
+        <div id="fileLabelsContainer">
+        </div>
     </div>
     <div id="EngineOutput">Thinking Time:
         <br/>

@@ -218,6 +218,18 @@ var CastlePerm = [
   15, 15, 15, 15, 15, 15, 15, 15, 15, 15
 ];
 
+/* 
+CastlePerm array is all 15s except the six squares are the locations
+of a8 h8 a1 h1 e1 and e8
+15 is binary 1111
+
+castlepermission &= CastlePerm[From]  1111
+
+*/
+
+
+
+
 
 /* MOVE GENERATION EXPANATION
 

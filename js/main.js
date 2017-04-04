@@ -130,7 +130,12 @@ function InitSq120To64() {
 
 }
 
+
+
 function InitBoardVars() {
+
+    // prepopulates the game.history array with maxgamemoves number of elements
+    // fills it with dummy values
 
     var index = 0;
     for (index = 0; index < MAXGAMEMOVES; ++index) {
