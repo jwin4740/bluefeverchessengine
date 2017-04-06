@@ -202,8 +202,8 @@ function MakeMove(move) {
 }
 
 function TakeMove() {
-
-    GameBoard.hisPly--;
+//need to decrement by one to find the info on the previous move
+    GameBoard.hisPly--;  
     GameBoard.ply--;
 
     var move = GameBoard.history[GameBoard.hisPly].move;
@@ -223,6 +223,8 @@ function TakeMove() {
     GameBoard.side ^= 1;
     HASH_SIDE();
 
+
+// add piece at en passant square
     if ((MFLAGEP & move) != 0) {
         if (GameBoard.side == COLOURS.WHITE) {
             AddPiece(to - 10, PIECES.bP);

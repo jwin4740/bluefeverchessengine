@@ -1,3 +1,8 @@
+// this file is not necessary for the program to run, it is just used for checking
+// the move generator
+
+// for starting FEN position Perft(1) = 20 because there are 20 moves white can legally make
+// so Perft(2) = 400 because black can also make 20 legal moves
 var perft_leafNodes;
 
 function Perft(depth) { 	
@@ -24,6 +29,15 @@ function Perft(depth) {
     
     return;
 }
+/* 
+
+a2a3: 450000 leaf nodes			if Sharper had the same nodes here
+a2a4: 600000leaf nodes			if Sharper had the same nodes here
+b3b4: 756486 leaf nodes			if Sharper had different number of nodes you can go sequentially go back to depth 0 to figure where you went wrong
+
+Perft(5) from start is 4865609 leaf nodes 
+	-- if your engine does not get that number than it is helpful to know where to find the bug
+*/
 
 function PerftTest(depth) {    
 
@@ -41,7 +55,7 @@ function PerftTest(depth) {
 			continue;
 		}	
 		moveNum++;	
-        var cumnodes = perft_leafNodes;
+        var cumnodes = perft_leafNodes;  // cumulative nodes
 		Perft(depth-1);
 		TakeMove();
 		var oldnodes = perft_leafNodes - cumnodes;
@@ -53,54 +67,4 @@ function PerftTest(depth) {
     return;
 
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 

@@ -140,7 +140,7 @@ function PrintBoard() {
 		console.log(line);
 	}
 
-	console.log("");
+
 	var line = "   ";
 	for (file = FILES.FILE_A; file <= FILES.FILE_H; file++) {
 		line += (' ' + FileChar[file] + ' ');
@@ -157,8 +157,8 @@ function PrintBoard() {
 	if (GameBoard.castlePerm & CASTLEBIT.BQCA) line += 'q';
 
 	// posKeyArray.push(GameBoard.posKey.toString(16));
-	posKeyArray.push(GameBoard.posKey);
-	console.log(posKeyArray)
+
+	console.log("castle: " + GameBoard.castlePerm);
 }
 
 // generates unique position key every time there is a move
@@ -185,6 +185,7 @@ function GeneratePosKey() {
 
 	finalKey ^= CastleKeys[GameBoard.castlePerm];
 
+	console.log("key: " + finalKey);
 	return finalKey;
 
 }

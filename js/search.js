@@ -291,7 +291,7 @@ function SearchPosition() {
 			line += (" Ordering:" + ((SearchController.fhf/SearchController.fh)*100).toFixed(2) + "%");
 		}
 	
-		console.log(line);
+		// console.log(line);
 						
 	}	
 
