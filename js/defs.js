@@ -223,7 +223,16 @@ CastlePerm array is all 15s except the six squares are the locations
 of a8 h8 a1 h1 e1 and e8
 15 is binary 1111
 
-castlepermission &= CastlePerm[From]  1111
+essentially each move we have to check if each side is capable of castling
+so if either king or rook is moved the castle permission must be adjusted to 
+reflect that
+
+- 1111 means both sides can still castle
+    - fourth bit : white kingside
+    - third bit : white queenside
+
+example: if white king moves we bitwise AND 
+cp &= CastlePerm[From]  1111 &= 1100 = 1100     15 &= 12 = 12    is our new castle permission
 
 */
 
