@@ -1,3 +1,9 @@
+// pawnTable[0] = coordinate a1
+// pawnTable[7] = coordinate h1
+// ... etc
+
+// pawn table gives points to pawn positions, thus encouraging computer to move pawns to center of the
+// board
 var PawnTable = [
 0	,	0	,	0	,	0	,	0	,	0	,	0	,	0	,
 10	,	10	,	0	,	-10	,	-10	,	0	,	10	,	10	,
@@ -46,14 +52,15 @@ var RookTable = [
 var BishopPair = 40;
 
 
-function EvalPosition() {
-	
+function EvalPosition() {  // returns a score
+	// initial score is set to material difference
 	var score = GameBoard.material[COLOURS.WHITE] - GameBoard.material[COLOURS.BLACK];
-	
+		// example if black is up by one pawn, the score = -100
 	var pce;
 	var sq;
 	var pceNum;
 	
+// a loop for each color and type of piece that uses the above tables to add to the total score
 	pce = PIECES.wP;
 	for(pceNum = 0; pceNum < GameBoard.pceNum[pce]; ++pceNum) {
 		sq = GameBoard.pList[PCEINDEX(pce,pceNum)];
@@ -101,7 +108,7 @@ function EvalPosition() {
 		sq = GameBoard.pList[PCEINDEX(pce,pceNum)];
 		score -= RookTable[MIRROR64(SQ64(sq))];
 	}
-	
+	// for queens we use rook table divided by 2
 	pce = PIECES.wQ;	
 	for(pceNum = 0; pceNum < GameBoard.pceNum[pce]; ++pceNum) {
 		sq = GameBoard.pList[PCEINDEX(pce,pceNum)];
@@ -114,6 +121,8 @@ function EvalPosition() {
 		score -= RookTable[MIRROR64(SQ64(sq))];
 	}	
 	
+
+	// => 2 because of promotions
 	if(GameBoard.pceNum[PIECES.wB] >= 2) {
 		score += BishopPair;
 	}
@@ -121,7 +130,10 @@ function EvalPosition() {
 	if(GameBoard.pceNum[PIECES.bB] >= 2) {
 		score -= BishopPair;
 	}
-	
+
+
+
+// this way we are always returning the score from the side moving
 	if(GameBoard.side == COLOURS.WHITE) {
 		return score;
 	} else {

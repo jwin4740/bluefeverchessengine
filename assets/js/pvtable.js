@@ -1,3 +1,19 @@
+/*
+
+PvTable[10000]
+
+entry has posKey and move stored
+
+(because we found a move that beats alpha)
+index = posKey % 10000;
+
+PvTable[index].move = move from alpha-beta   posKey = GameBoard.posKey
+
+*/
+
+
+
+
 function GetPvLine(depth) {
 	
 	var move = ProbePvTable();
@@ -22,9 +38,12 @@ function GetPvLine(depth) {
 	
 }
 
+
+
 function ProbePvTable() {
 	var index = GameBoard.posKey % PVENTRIES;
 	
+	// we know we that we can return that move because it beat alpha
 	if(GameBoard.PvTable[index].posKey == GameBoard.posKey) {
 		return GameBoard.PvTable[index].move;
 	}

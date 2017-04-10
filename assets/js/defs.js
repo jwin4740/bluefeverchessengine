@@ -175,6 +175,7 @@ function RAND_32() {
 
 }
 
+// for the evaluate functions it 'flips' the board to blacks perspective
 var Mirror64 = [
   56, 57, 58, 59, 60, 61, 62, 63,
   48, 49, 50, 51, 52, 53, 54, 55,
@@ -198,6 +199,7 @@ function PCEINDEX(pce, pceNum) {
   return (pce * 10 + pceNum);
 }
 
+// takes in a square and returns mirror64 array at the index of square 
 function MIRROR64(sq) {
   return Mirror64[sq];
 }

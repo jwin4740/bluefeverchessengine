@@ -44,17 +44,19 @@ function ClearPvTable() {
 	}
 }
 
-function CheckUp() {
+function CheckUp() {  // if we take more time than allowed we break out of search
 	if (( $.now() - SearchController.start ) > SearchController.time) {
 		SearchController.stop = BOOL.TRUE;
 	}
 }
 
 function IsRepetition() {
+// checks for three repitition stalemate rule
+	// a pawn move or capture  is a permanent change to the board position  
 	var index = 0;
 	
 	for(index = GameBoard.hisPly - GameBoard.fiftyMove; index < GameBoard.hisPly - 1; ++index) {
-		if(GameBoard.posKey == GameBoard.history[index].posKey) {
+		if(GameBoard.posKey == GameBoard.history[index].posKey) {  // esssentially sees if our posKey is equal to a previous posKey
 			return BOOL.TRUE;
 		}
 	}
@@ -63,7 +65,7 @@ function IsRepetition() {
 }
 
 function Quiescence(alpha, beta) {
-
+// call checkup every 2047 nodes
 	if ((SearchController.nodes & 2047) == 0) {
 		CheckUp();
 	}
@@ -157,7 +159,7 @@ function AlphaBeta(alpha, beta, depth) {
 	
 	SearchController.nodes++;
 	
-	// check for repetition and fifty move rule
+	// check for 3 fold repetition and fifty move rule
 	if( (IsRepetition() || GameBoard.fiftyMove >= 100) && GameBoard.ply != 0) {
 		return 0;
 	}

@@ -148,6 +148,7 @@ function InitBoardVars() {
         });
     }
 
+// fills PvTable
     for (index = 0; index < PVENTRIES; ++index) {
         GameBoard.PvTable.push({
             move: NOMOVE,
