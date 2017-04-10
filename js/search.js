@@ -1,6 +1,6 @@
 var SearchController = {};
 
-SearchController.nodes;
+SearchController.nodes;  // number of nodes visited during a search
 SearchController.fh;
 SearchController.fhf;
 SearchController.depth;
@@ -136,8 +136,17 @@ function Quiescence(alpha, beta) {
 }
 
 function AlphaBeta(alpha, beta, depth) {
-
+	/* 
 	
+	general ordering as follows
+	1. pv move
+	2. capturing moves
+	3. killer moves (because give us beta cutoffs)
+	4. increment history counter
+
+	*/
+
+	// once we reach our depth we stop the search
 	if(depth <= 0) {
 		return Quiescence(alpha, beta);
 	}
@@ -148,10 +157,12 @@ function AlphaBeta(alpha, beta, depth) {
 	
 	SearchController.nodes++;
 	
+	// check for repetition and fifty move rule
 	if( (IsRepetition() || GameBoard.fiftyMove >= 100) && GameBoard.ply != 0) {
 		return 0;
 	}
-	
+	// we only go to 63 if it hits 63 then evaluate function
+		// note very rare that we ever get to depth 63
 	if(GameBoard.ply > MAXDEPTH -1) {
 		return EvalPosition();
 	}	
@@ -163,15 +174,23 @@ function AlphaBeta(alpha, beta, depth) {
 	
 	var Score = -INFINITE;
 	
-	GenerateMoves();
+	GenerateMoves(); 
+	// for example if we have a best line for a depth of 6, when we got to depth 7 go down
+	// that line first so we can get more cutoffs
 	
-	var MoveNum = 0;
+	// get a PvMove (Principal variation)
+	// Order PvMove
+
+	
+	var MoveNum = 0;  //index
 	var Legal = 0;
-	var OldAlpha = alpha;
+	var OldAlpha = alpha; // if we got through the loop with no alpha improvement
 	var BestMove = NOMOVE;
 	var Move = NOMOVE;	
 	
 	var PvMove = ProbePvTable();
+
+	// loop through generated moves
 	if(PvMove != NOMOVE) {
 		for(MoveNum = GameBoard.moveListStart[GameBoard.ply]; MoveNum < GameBoard.moveListStart[GameBoard.ply + 1]; ++MoveNum) {
 			if(GameBoard.moveList[MoveNum] == PvMove) {
@@ -191,7 +210,7 @@ function AlphaBeta(alpha, beta, depth) {
 			continue;
 		}		
 		Legal++;
-		Score = -AlphaBeta( -beta, -alpha, depth-1);
+		Score = -AlphaBeta( -beta, -alpha, depth-1); // because of negamax
 		
 		TakeMove();
 		
@@ -200,11 +219,12 @@ function AlphaBeta(alpha, beta, depth) {
 		}
 		
 		if(Score > alpha) {
-			if(Score >= beta) {
-				if(Legal == 1) {
+			if(Score >= beta) {  // check for beta cutoff
+				if(Legal == 1) { // if this happens it  means we got a beta cutoff right away and prunes a lot of nodes
 					SearchController.fhf++;
 				}
-				SearchController.fh++;		
+				SearchController.fh++;	
+				// fail high first (fhf) / fail high (fh) shows the percentage of beta cutoffs on first mvoes
 				if((Move & MFLAGCAP) == 0) {
 					GameBoard.searchKillers[MAXDEPTH + GameBoard.ply] = 
 						GameBoard.searchKillers[GameBoard.ply];
@@ -212,15 +232,19 @@ function AlphaBeta(alpha, beta, depth) {
 				}					
 				return beta;
 			}
+
+			// capturing moves most likely cause beta cutoff
 			if((Move & MFLAGCAP) == 0) {
 				GameBoard.searchHistory[GameBoard.pieces[FROMSQ(Move)] * BRD_SQ_NUM + TOSQ(Move)]
 						 += depth * depth;
 			}
 			alpha = Score;
+
+			// every time we improve alpha that makes the move better
 			BestMove = Move;				
 		}		
 	}	
-	
+	// check for checkmate
 	if(Legal == 0) {
 		if(InCheck == BOOL.TRUE) {
 			return -MATE + GameBoard.ply;
@@ -233,7 +257,7 @@ function AlphaBeta(alpha, beta, depth) {
 		StorePvMove(BestMove);
 	}
 	
-	return alpha;
+	return alpha;  // represents best situation
 }
 
 function ClearForSearch() {
@@ -268,7 +292,7 @@ function SearchPosition() {
 	var PvNum;
 	var c;
 	ClearForSearch();
-	
+	// iterative deepening
 	for( currentDepth = 1; currentDepth <= SearchController.depth; ++currentDepth) {	
 	
 		Score = AlphaBeta(-INFINITE, INFINITE, currentDepth);
