@@ -169,6 +169,9 @@ function AlphaBeta(alpha, beta, depth) {
 		return EvalPosition();
 	}	
 	
+	// are we in check?
+	// if in check we will increment the depth because there are very limited moves to get out of check and there is 
+	// a better possibility that a mate will follow
 	var InCheck = SqAttacked(GameBoard.pList[PCEINDEX(Kings[GameBoard.side],0)], GameBoard.side^1);
 	if(InCheck == BOOL.TRUE)  {
 		depth++;
@@ -249,7 +252,7 @@ function AlphaBeta(alpha, beta, depth) {
 	// check for checkmate
 	if(Legal == 0) {
 		if(InCheck == BOOL.TRUE) {
-			return -MATE + GameBoard.ply;
+			return -MATE + GameBoard.ply;  // tells us distance to mate from root i.e. mate in x moves
 		} else {
 			return 0;
 		}
@@ -263,14 +266,17 @@ function AlphaBeta(alpha, beta, depth) {
 }
 
 function ClearForSearch() {
-
+// clears everything to get ready for search
 	var index = 0;
 	var index2 = 0;
-	
+
+// this is our history heuristic, which is what gets incremented every time a move 
+// improves alpha for a non capturing move	
 	for(index = 0; index < 14 * BRD_SQ_NUM; ++index) {				
 		GameBoard.searchHistory[index] = 0;	
 	}
-	
+
+// a non capture move that beats beta	
 	for(index = 0; index < 3 * MAXDEPTH; ++index) {
 		GameBoard.searchKillers[index] = 0;
 	}	

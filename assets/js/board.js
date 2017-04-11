@@ -28,7 +28,7 @@ GameBoard.moveScores = new Array(MAXDEPTH * MAXPOSITIONMOVES);
 GameBoard.moveListStart = new Array(MAXDEPTH);
 GameBoard.PvTable = [];
 GameBoard.PvArray = new Array(MAXDEPTH); // shows the best line the engine found or is finding during the search
-GameBoard.searchHistory = new Array(14 * BRD_SQ_NUM);
+GameBoard.searchHistory = new Array(14 * BRD_SQ_NUM); // indexed by piece and board square number
 GameBoard.searchKillers = new Array(3 * MAXDEPTH);
 
 /*
