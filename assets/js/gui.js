@@ -1,7 +1,10 @@
 $("#SetFen").click(function () {
 	var fenStr = $("#fenIn").val();
+		
 	NewGame(fenStr);
-	// PerftTest(5);
+	// SearchPosition();
+	// PerftTest(3);
+
 });
 
 $('#TakeButton').click(function () {
@@ -334,7 +337,7 @@ $('#SearchButton').click(function () {
 
 function StartSearch() {
 
-	SearchController.depth = 5; // set to 5 not MAXDEPTH for testing
+	SearchController.depth = MAXDEPTH; // set to 5 not MAXDEPTH for testing
 	var t = $.now();
 	var tt = $('#ThinkTimeChoice').val();
 

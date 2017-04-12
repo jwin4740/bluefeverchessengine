@@ -12,9 +12,9 @@ SearchController.thinking;
 
 function PickNextMove(MoveNum) {
 
-	var index = 0;
+	var index = 0; // index of current move
 	var bestScore = -1;
-	var bestNum = MoveNum;
+	var bestNum = MoveNum; // best index of move found so far
 
 	for (index = MoveNum; index < GameBoard.moveListStart[GameBoard.ply + 1]; ++index) {
 		if (GameBoard.moveScores[index] > bestScore) {
@@ -22,7 +22,8 @@ function PickNextMove(MoveNum) {
 			bestNum = index;
 		}
 	}
-
+	// swapping positions in the array for the moveScore 
+	// do the same for moveList
 	if (bestNum != MoveNum) {
 		var temp = 0;
 		temp = GameBoard.moveScores[MoveNum];
@@ -65,7 +66,7 @@ function IsRepetition() {
 }
 
 // very similar to alpha/beta function, but searching only captures
-function Quiescence(alpha, beta) { 
+function Quiescence(alpha, beta) {
 	// call checkup every 2047 nodes
 	if ((SearchController.nodes & 2047) == 0) {
 		CheckUp();
@@ -150,11 +151,11 @@ function AlphaBeta(alpha, beta, depth) {
 	*/
 
 
-	
+
 	// once we reach our depth we stop the search
 	if (depth <= 0) {
 		return Quiescence(alpha, beta); // implemented to eliminate the horizon effect
-		
+
 	}
 
 	if ((SearchController.nodes & 2047) == 0) {
@@ -199,7 +200,7 @@ function AlphaBeta(alpha, beta, depth) {
 
 	var PvMove = ProbePvTable();
 
-	// loop through generated moves
+	// loop through generated moves and when we find a move that is a pv move, we give it a huge score
 	if (PvMove != NOMOVE) {
 		for (MoveNum = GameBoard.moveListStart[GameBoard.ply]; MoveNum < GameBoard.moveListStart[GameBoard.ply + 1]; ++MoveNum) {
 			if (GameBoard.moveList[MoveNum] == PvMove) {
@@ -242,7 +243,7 @@ function AlphaBeta(alpha, beta, depth) {
 				return beta;
 			}
 
-			// capturing moves most likely cause beta cutoff
+			// capturing moves most likely causes beta cutoff
 			if ((Move & MFLAGCAP) == 0) {
 				GameBoard.searchHistory[GameBoard.pieces[FROMSQ(Move)] * BRD_SQ_NUM + TOSQ(Move)] += depth * depth;
 			}

@@ -1,13 +1,21 @@
+
+
+// most valuable victim and least valuable attacker
+    // so any moves that capture a queen searched first, then rook ...
+    // those moves themselves are searched against the least valuable attacker i.e. pawn capture queen
+    // pawn is 100   knight 200   bishop 300   rook 400   queen 500   king 600
 var MvvLvaValue = [0, 100, 200, 300, 400, 500, 600, 100, 200, 300, 400, 500, 600];
-var MvvLvaScores = new Array(14 * 14);
+var MvvLvaScores = new Array(14 * 14); // every combination of victim and attacker will have their individual index
 
 function InitMvvLva() {
     var Attacker;
     var Victim;
 
+
     for (Attacker = PIECES.wP; Attacker <= PIECES.bK; ++Attacker) {
         for (Victim = PIECES.wP; Victim <= PIECES.bK; ++Victim) {
             MvvLvaScores[Victim * 14 + Attacker] = MvvLvaValue[Victim] + 6 - (MvvLvaValue[Attacker] / 100);
+            // example: pawn captures queen       506 - 100/100 = 505
         }
     }
 
@@ -38,21 +46,27 @@ function MOVE(from, to, captured, promoted, flag) {
     return (from | (to << 7) | (captured << 14) | (promoted << 20) | flag);
 }
 
+// gets capture score
 function AddCaptureMove(move) {
     GameBoard.moveList[GameBoard.moveListStart[GameBoard.ply + 1]] = move;
     GameBoard.moveScores[GameBoard.moveListStart[GameBoard.ply + 1]++] =
         MvvLvaScores[CAPTURED(move) * 14 + GameBoard.pieces[FROMSQ(move)]] + 1000000;
+        // (victim * 14 + piece on from square) gives us index
 }
 
 function AddQuietMove(move) {
     GameBoard.moveList[GameBoard.moveListStart[GameBoard.ply + 1]] = move;
     GameBoard.moveScores[GameBoard.moveListStart[GameBoard.ply + 1]] = 0;
 
+// if move equals first killer move set to 900000
+// if move equals second killer move set to 800000
+
     if (move == GameBoard.searchKillers[GameBoard.ply]) {
         GameBoard.moveScores[GameBoard.moveListStart[GameBoard.ply + 1]] = 900000;
     } else if (move == GameBoard.searchKillers[GameBoard.ply + MAXDEPTH]) {
         GameBoard.moveScores[GameBoard.moveListStart[GameBoard.ply + 1]] = 800000;
     } else {
+        // setting our score equal to gameboard.history at from square of the move
         GameBoard.moveScores[GameBoard.moveListStart[GameBoard.ply + 1]] =
             GameBoard.searchHistory[GameBoard.pieces[FROMSQ(move)] * BRD_SQ_NUM + TOSQ(move)];
     }
@@ -60,6 +74,8 @@ function AddQuietMove(move) {
     GameBoard.moveListStart[GameBoard.ply + 1]++
 }
 
+
+// because we know pawn capturing pawn gives us a value of 105 
 function AddEnPassantMove(move) {
     GameBoard.moveList[GameBoard.moveListStart[GameBoard.ply + 1]] = move;
     GameBoard.moveScores[GameBoard.moveListStart[GameBoard.ply + 1]++] = 105 + 1000000;
