@@ -13,7 +13,7 @@ PvTable[index].move = move from alpha-beta   posKey = GameBoard.posKey
 
 
 
-
+// get the move at root from the pvtable make that move, get the next move from the pv table ...
 function GetPvLine(depth) {
 	
 	var move = ProbePvTable();

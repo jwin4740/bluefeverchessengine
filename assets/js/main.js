@@ -216,5 +216,6 @@ function init() {
     InitMvvLva();
     InitBoardSquares();
     CheckBoard();
+   
 
 }

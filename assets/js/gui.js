@@ -12,6 +12,7 @@ $('#TakeButton').click(function () {
 	}
 });
 displayCoordinates();
+
 $('#NewGameButton').click(function () {
 	NewGame(START_FEN);
 });
@@ -21,6 +22,7 @@ function NewGame(fenStr) {
 	PrintBoard();
 	SetInitialBoardPieces();
 	CheckAndSet();
+	display64Numbers();
 }
 
 function ClearAllPieces() {
@@ -332,7 +334,7 @@ $('#SearchButton').click(function () {
 
 function StartSearch() {
 
-	SearchController.depth = MAXDEPTH;
+	SearchController.depth = 5; // set to 5 not MAXDEPTH for testing
 	var t = $.now();
 	var tt = $('#ThinkTimeChoice').val();
 
@@ -353,4 +355,12 @@ function displayCoordinates() {
 		var letter = String.fromCharCode(i + 65);
 		$("#fileLabelsContainer").append("<div class='labelsRow'>" + letter + "</div>");
 	}
+}
+
+function display64Numbers() {
+	// for (var i = 8; i > 0; i--) {
+	// 	for (var j = 1; j <= 8; j++) {
+	console.log("working test test test");
+	$(".Square").append("<div class='location'>64</div>");
+
 }

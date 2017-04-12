@@ -13,9 +13,10 @@ function InitMvvLva() {
 
 }
 
+
 function MoveExists(move) {
 
-    GenerateMoves();
+    GenerateMoves(); // generate all moves from current position
 
     var index;
     var moveFound = NOMOVE;
