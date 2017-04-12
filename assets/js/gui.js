@@ -358,9 +358,25 @@ function displayCoordinates() {
 }
 
 function display64Numbers() {
-	// for (var i = 8; i > 0; i--) {
-	// 	for (var j = 1; j <= 8; j++) {
-	console.log("working test test test");
-	$(".Square").append("<div class='location'>64</div>");
 
+	var counter = 21;
+	var modCount = 0;
+	for (var i = 8; i > 0; i--) {
+		for (var j = 1; j <= 8; j++) {
+			modCount++;
+			if (modCount % 9 === 0) {
+				modCount++;
+				counter = counter + 2;
+			}
+			if (modCount % 2 === 0) {
+				color = "Dark";
+			} else {
+				color = "Light";
+			}
+			var newDiv = $("<div>");
+			newDiv.addClass("location").append(counter);
+			$(".Square.rank" + i + ".file" + j + "." + color).append(newDiv);
+			counter++;
+		}
+	}
 }
